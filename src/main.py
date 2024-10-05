@@ -46,13 +46,13 @@ async def predict(data: FlightData):
     input_data = pd.DataFrame([data.dict()])
     input_data = pd.get_dummies(input_data, columns=["carrier", "origin", "dest"], drop_first=True)
 
-    # certificar-se de que as colunas do modelo estão presentes
+    # certifica que as colunas do modelo estão presentes
     missing_cols = set(model.feature_names_in_) - set(input_data.columns)
     for col in missing_cols:
         input_data[col] = 0
     input_data = input_data[model.feature_names_in_]
 
-    # realiza a predição
+    # predição
     prediction = model.predict(input_data)[0]
 
     # salva no histórico
