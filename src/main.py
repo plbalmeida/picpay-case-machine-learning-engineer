@@ -168,20 +168,20 @@ async def predict(data: FlightData):
         raise HTTPException(status_code=400, detail="Modelo não carregado")
 
     try:
-        # Preparar os dados de entrada
+        # prepara os dados de entrada
         input_data = pd.DataFrame([data.dict()])
         input_data = pd.get_dummies(input_data, columns=["carrier", "origin", "dest"], drop_first=True)
 
-        # Certifica que as colunas do modelo estão presentes
+        # certifica que as colunas do modelo estão presentes
         missing_cols = set(model.feature_names_in_) - set(input_data.columns)
         for col in missing_cols:
             input_data[col] = 0
         input_data = input_data[model.feature_names_in_]
 
-        # Predição
+        # predição
         prediction = model.predict(input_data)[0]
 
-        # Salva no histórico
+        # salva no histórico
         history_entry = {"input": data.dict(), "prediction": prediction}
         history.append(history_entry)
 
