@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-delay-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flight-delay-api
+  template:
+    metadata:
+      labels:
+        app: flight-delay-api
+    spec:
+      containers:
+        - name: flight-delay-api-container
+          image: plbalmeida85/flight-delay-api:latest
+          ports:
+            - containerPort: 8000
