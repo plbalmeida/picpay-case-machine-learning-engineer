@@ -29,6 +29,7 @@ class FlightData(BaseModel):
     dest: str
     carrier: str
     distance: float
+    dep_delay: float
 
     class Config:
         json_schema_extra = {
@@ -42,6 +43,7 @@ class FlightData(BaseModel):
                 "dest": "LAX",
                 "carrier": "DL",
                 "distance": 3983.0,
+                "dep_delay": 15.0
             }
         }
 
