@@ -118,7 +118,7 @@ Ou a documentação **ReDoc** em:
 http://localhost:8000/redoc
 ```
 
-# Execução da aplicação com Kubernetes no EKS
+# Execução da aplicação com Kubernetes
 
 Antes de executar a aplicação no Kubernetes, precisamos ter a imagem Docker (não é necessário executar o build e push se realizou os passos anteriores de **Execução da aplicação com Docker**).
 
