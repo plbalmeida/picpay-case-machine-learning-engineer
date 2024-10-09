@@ -1,3 +1,45 @@
+# Desafio de MLE da PicPay
+
+O presente repositório tem a solução do desafio para a posição de MLE na PicPay.
+
+A solução consiste em uma API para previsão de atraso em voos baseado em um modelo de ML treinado.
+
+# Stack utilizada
+
+- Python (PySpark, sci-kit learn, FastAPI)
+- Docker
+- Kubernetes
+
+# Estrutura do repo
+
+```bash
+.
+├── README.md
+├── data
+│   ├── processed
+│   └── raw
+│       └── airports-database.zip
+├── docker
+│   ├── Dockerfile
+│   └── requirements.txt
+├── docs
+│   ├── diagram.drawio
+│   └── diagram.png
+├── kubernetes
+│   ├── deployment.yaml
+│   └── service.yaml
+├── model
+│   └── flight_delay_model.joblib
+├── notebook
+│   ├── 01-etl.ipynb
+│   ├── 02-eda.ipynb
+│   └── 03-ml.ipynb
+├── requirements.txt
+└── src
+    ├── main.py
+    └── test_main.py
+```
+
 # Execução da aplicação com Docker
 
 Build da imagem Docker:
