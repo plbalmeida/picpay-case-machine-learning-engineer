@@ -4,13 +4,13 @@ O presente repositório tem a solução do desafio para a posição de MLE na Pi
 
 A solução consiste em uma API para previsão de atraso em voos baseado em um modelo de ML treinado.
 
-# Stack utilizada
+## Stack utilizada
 
 - Python (PySpark, sci-kit learn, FastAPI)
 - Docker
 - Kubernetes
 
-# Estrutura do repo
+## Estrutura do repo
 
 ```bash
 .
@@ -40,7 +40,7 @@ A solução consiste em uma API para previsão de atraso em voos baseado em um m
     └── test_main.py
 ```
 
-# Execução da aplicação com Docker
+## Execução da aplicação com Docker
 
 Build da imagem Docker:
 
@@ -160,7 +160,7 @@ Ou a documentação **ReDoc** em:
 http://localhost:8000/redoc
 ```
 
-# Execução da aplicação com Kubernetes
+## Execução da aplicação com Kubernetes
 
 Antes de executar a aplicação no Kubernetes, precisamos ter a imagem Docker (não é necessário executar o build e push se realizou os passos anteriores de **Execução da aplicação com Docker**).
 
@@ -305,7 +305,7 @@ Agora é possível testar as rotas da API usando `curl` diretamente do terminal.
      }
      ```
 
-# Desligando/deletanado o Kubernetes e Docker
+## Desligando/deletanado o Kubernetes e Docker
 
 Execute o comando abaixo para deletar os recursos criados no Kubernetes:
 
