@@ -181,6 +181,30 @@ A aplicação é gerenciada pelo Kubernetes pelos seguintes manifestos:
 - `kubernetes/deployment.yaml` define como a aplicação será implantada (replicas, pods, containers).
 - `kubernetes/service.yaml` cria um serviço para acessar a aplicação exposta pelo Kubernetes.
 
+No manifesto `kubernetes/deployment.yaml` deve ser incluido o usuário do Docker Hub:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-delay-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flight-delay-api
+  template:
+    metadata:
+      labels:
+        app: flight-delay-api
+    spec:
+      containers:
+        - name: flight-delay-api-container
+          image: <SEU USUÁRIO DO DOCKER HUB>/flight-delay-api:latest
+          ports:
+            - containerPort: 8000
+```
+
 Navegar até a pasta do projeto e aplique os manifestos YAML:
 
 ```bash
