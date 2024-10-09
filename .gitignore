@@ -1,5 +1,6 @@
 *__pycache__
 *.json
+*.parquet
 .env
 .pytest_cache
 data/processed/*
