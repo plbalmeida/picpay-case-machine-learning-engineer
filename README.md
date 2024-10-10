@@ -193,6 +193,10 @@ http://localhost:8000/redoc
 
 ### Execução da aplicação com Kubernetes
 
+Adicionalmente foram criados manifestos do Kubernetes para escalar a API com 3 réplicas.
+
+> **IMPORTANTE!** É esperado um comportamento inconsistente no uso das rotas da API com Kubernetes, pois o mesmo lida com múltiplas réplicas da API. No caso o manifesto de Deployment é configurado para ter 3 réplicas, o tráfego é distribuído entre essas réplicas, mas o o upload do binário do modelo de ML treinado, predição e estado do histórico está armazenado na memória local de cada instância. Isso significa que, dependendo de qual réplica responde a requisição, o retorno pode ser inconsistente. Uma solução seria usar um cache distribuído, como Redis ou Memcached, para armazenar binário do modelo e o histórico de predições, assim todas as réplicas poderiam acessar e atualizar o mesmo cache, mantendo o uso da API consistente.
+
 Antes de executar a aplicação no Kubernetes, precisamos ter a imagem Docker (não é necessário executar o build e push se realizou os passos anteriores de **Execução da aplicação com Docker**).
 
 Build da imagem do Docker:
@@ -335,8 +339,6 @@ Agora é possível testar as rotas da API usando `curl` diretamente do terminal.
        ]
      }
      ```
-
-> **IMPORTANTE!** É esperado um comportamento inconsistente no uso das rotas da API com Kubernetes, pois o mesmo lida com múltiplas réplicas da API. No caso o manifesto de Deployment é configurado para ter 3 réplicas, o tráfego é distribuído entre essas réplicas, mas o o upload do binário do modelo de ML treinado, predição e estado do histórico está armazenado na memória local de cada instância. Isso significa que, dependendo de qual réplica responde a requisição, o retorno pode ser inconsistente. Uma solução seria usar um cache distribuído, como Redis ou Memcached, para armazenar binário do modelo e o histórico de predições, assim todas as réplicas poderiam acessar e atualizar o mesmo cache, mantendo o uso da API consistente.
 
 ## Desligando/deletanado o Kubernetes e Docker
 
