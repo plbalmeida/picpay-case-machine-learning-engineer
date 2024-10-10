@@ -121,7 +121,7 @@ async def load_model(file: UploadFile = File(...)):
             "description": "Predição realizada com sucesso.",
             "content": {
                 "application/json": {
-                    "example": {"prediction": 23.5}
+                    "example": {"prediction": -29.344152735629503}
                 }
             },
         },
@@ -217,7 +217,7 @@ async def predict(data: FlightData):
                                 "carrier": "DL",
                                 "distance": 3983.0,
                                 "dep_delay": 15.0
-                            }, "prediction": 23.5}
+                            }, "prediction": -29.344152735629503}
                         ]
                     }
                 }
