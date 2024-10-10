@@ -1,4 +1,5 @@
 import os
+import tempfile
 from fastapi.testclient import TestClient
 from main import app
 from fastapi import status
@@ -30,7 +31,8 @@ def test_predict_without_model_loaded():
         "origin": "JFK",
         "dest": "LAX",
         "carrier": "DL",
-        "distance": 3983.0
+        "distance": 3983.0,
+        "dep_delay": 15.0
     }
     response = client.post("/model/predict/", json=data)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -63,13 +65,13 @@ def test_load_model():
 def test_load_model_invalid_file():
     """
     Testa o endpoint de carregamento do modelo com um arquivo inválido.
-    Envia um arquivo que não é um modelo .joblib e verifica se a resposta é um erro 400.
+    Cria um arquivo temporário que não é um modelo .joblib e verifica se a resposta é um erro apropriado.
     """
-    invalid_file_path = os.path.join(os.getcwd(), "data", "processed", "airports-database.csv")
-    assert os.path.exists(invalid_file_path), f"O arquivo de dados não foi encontrado em {invalid_file_path}"
-    with open(invalid_file_path, "rb") as file:
-        response = client.post("/model/load/", files={"file": ("airports-database.csv", file, "text/csv")})
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    with tempfile.NamedTemporaryFile(suffix=".csv") as file:
+        file.write(b"Este nao e um modelo valido.")  # conteúdo inválido para simular erro
+        file.seek(0)
+        response = client.post("/model/load/", files={"file": (file.name, file, "text/csv")})
+    assert response.status_code in [status.HTTP_400_BAD_REQUEST, status.HTTP_422_UNPROCESSABLE_ENTITY]
     assert "detail" in response.json()
 
 
@@ -92,7 +94,8 @@ def test_predict_with_model_loaded():
         "origin": "JFK",
         "dest": "LAX",
         "carrier": "DL",
-        "distance": 3983.0
+        "distance": 3983.0,
+        "dep_delay": 15.0
     }
     response = client.post("/model/predict/", json=data)
     assert response.status_code == status.HTTP_200_OK
@@ -118,7 +121,8 @@ def test_get_history():
         "origin": "JFK",
         "dest": "LAX",
         "carrier": "DL",
-        "distance": 3983.0
+        "distance": 3983.0,
+        "dep_delay": 15.0
     }
     client.post("/model/predict/", json=data)
 

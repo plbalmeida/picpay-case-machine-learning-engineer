@@ -215,7 +215,8 @@ async def predict(data: FlightData):
                                 "origin": "JFK",
                                 "dest": "LAX",
                                 "carrier": "DL",
-                                "distance": 3983.0
+                                "distance": 3983.0,
+                                "dep_delay": 15.0
                             }, "prediction": 23.5}
                         ]
                     }
