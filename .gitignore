@@ -3,5 +3,6 @@
 *.parquet
 .env
 .pytest_cache
+data/enriched_airport_data/*
 data/processed/*
 venv
