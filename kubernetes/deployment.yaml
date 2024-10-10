@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: flight-delay-api-container
-          image: plbalmeida85/flight-delay-api:latest
+          image: plbalmeida85/flight_delay_api:latest
           ports:
             - containerPort: 8000
