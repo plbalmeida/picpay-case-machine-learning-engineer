@@ -73,6 +73,8 @@ Para executar os testes unitários, executar:
 pytest src/test_main.py
 ```
 
+### Execução da aplicação com Docker
+
 Build da imagem Docker:
 
 ```bash
@@ -191,7 +193,7 @@ Ou a documentação **ReDoc** em:
 http://localhost:8000/redoc
 ```
 
-### Execução da aplicação com Kubernetes
+### Execução da aplicação com Kubernetes (opcional)
 
 Adicionalmente foram criados manifestos do Kubernetes para escalar a API com 3 réplicas.
 
