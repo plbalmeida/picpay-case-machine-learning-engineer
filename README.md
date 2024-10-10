@@ -7,6 +7,7 @@ A solução consiste em uma API para previsão de atraso em voos baseado em um m
 ## Stack utilizada
 
 - Python (PySpark, sci-kit learn, FastAPI)
+- git
 - Docker
 - Kubernetes
 
@@ -40,7 +41,37 @@ A solução consiste em uma API para previsão de atraso em voos baseado em um m
     └── test_main.py
 ```
 
-## Execução da aplicação com Docker
+## Execução da aplicação
+
+Clonar o repo localmente:
+
+```bash
+git clone https://github.com/plbalmeida/picpay-case-machine-learning-engineer.git
+```
+
+Criar o ambiente virtual:
+
+```bash
+python3 -m venv venv
+```
+
+Ativar o ambiente:
+
+```bash
+source venv/bin/activate
+```
+
+Instalar as libs necessárias:
+
+```bash
+pip install -r requirements.txt  
+```
+
+Para executar os testes unitários, executar:
+
+```bash
+pytest src/test_main.py
+```
 
 Build da imagem Docker:
 
@@ -272,7 +303,7 @@ Agora é possível testar as rotas da API usando `curl` diretamente do terminal.
      Isso deve retornar a predição para o atraso:
 
      ```json
-     {"prediction": -39.54674527079645}
+     {"prediction": -29.344152735629503}
      ```
 
    - **Obter Histórico de Predições**:
@@ -299,7 +330,7 @@ Agora é possível testar as rotas da API usando `curl` diretamente do terminal.
              "distance": 3983.0,
              "dep_delay": 10.0
            },
-           "prediction": -39.54674527079645
+           "prediction": -29.344152735629503
          }
        ]
      }
