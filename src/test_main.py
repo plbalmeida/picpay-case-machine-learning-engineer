@@ -20,7 +20,7 @@ def test_health():
 def test_predict_without_model_loaded():
     """
     Testa o endpoint de predição sem que um modelo tenha sido carregado.
-    Verifica se a resposta é um erro 400 indicando que o modelo não foi carregado.
+    Verifica se a resposta é 200 indicando que o modelo não foi carregado.
     """
     data = {
         "month": 7,
@@ -35,18 +35,18 @@ def test_predict_without_model_loaded():
         "dep_delay": 15.0
     }
     response = client.post("/model/predict/", json=data)
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json() == {"detail": "Modelo não carregado"}
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"status": "Modelo não carregado"}
 
 
 def test_get_history_empty():
     """
     Testa o endpoint de histórico de previsões quando o histórico está vazio.
-    Verifica se a resposta é um erro 404 indicando que não há histórico disponível.
+    Verifica se a resposta é 200 indicando que não há histórico disponível.
     """
     response = client.get("/model/history/")
-    assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert response.json() == {"detail": "Histórico não encontrado"}
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"status": "Histórico não encontrado"}
 
 
 def test_load_model():
@@ -71,8 +71,9 @@ def test_load_model_invalid_file():
         file.write(b"Este nao e um modelo valido.")  # conteúdo inválido para simular erro
         file.seek(0)
         response = client.post("/model/load/", files={"file": (file.name, file, "text/csv")})
-    assert response.status_code in [status.HTTP_400_BAD_REQUEST, status.HTTP_422_UNPROCESSABLE_ENTITY]
-    assert "detail" in response.json()
+    assert response.status_code == status.HTTP_200_OK
+    assert "status" in response.json()
+    assert "Erro" in response.json()["status"]  # espera que a resposta contenha uma mensagem de erro genérica
 
 
 def test_predict_with_model_loaded():

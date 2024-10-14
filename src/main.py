@@ -55,37 +55,13 @@ class FlightData(BaseModel):
     description="Carrega o modelo treinado a partir de um arquivo .joblib.",
     responses={
         200: {
-            "description": "Modelo carregado com sucesso.",
+            "description": "Resposta para todas as situações.",
             "content": {
                 "application/json": {
                     "example": {"status": "Modelo carregado com sucesso"}
                 }
             },
-        },
-        400: {
-            "description": "Erro ao carregar o modelo.",
-            "content": {
-                "application/json": {
-                    "example": {"error": "Erro ao carregar o modelo. Verifique o arquivo."}
-                }
-            },
-        },
-        422: {
-            "description": "Formato do arquivo inválido.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Formato do arquivo inválido."}
-                }
-            },
-        },
-        500: {
-            "description": "Erro interno do servidor.",
-            "content": {
-                "application/json": {
-                    "example": {"error": "Erro interno do servidor."}
-                }
-            },
-        },
+        }
     },
     status_code=status.HTTP_200_OK,
 )
@@ -108,7 +84,7 @@ async def load_model(file: UploadFile = File(...)):
         model = joblib.load(file.file)
         return {"status": "Modelo carregado com sucesso"}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+         return {"status": f"Erro ao carregar o modelo. Detalhes: {str(e)}"}
 
 
 # endpoint para realizar predição
@@ -118,38 +94,15 @@ async def load_model(file: UploadFile = File(...)):
     description="Realiza uma predição de atraso de voo com base nos dados fornecidos.",
     responses={
         200: {
-            "description": "Predição realizada com sucesso.",
+            "description": "Resposta para todas as situações.",
             "content": {
                 "application/json": {
                     "example": {"prediction": -29.344152735629503}
                 }
             },
-        },
-        400: {
-            "description": "Modelo não carregado.",
-            "content": {
-                "application/json": {
-                    "example": {"error": "Modelo não carregado"}
-                }
-            },
-        },
-        422: {
-            "description": "Dados de entrada inválidos.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Dados de entrada inválidos. Verifique os valores fornecidos."}
-                }
-            },
-        },
-        500: {
-            "description": "Erro interno do servidor.",
-            "content": {
-                "application/json": {
-                    "example": {"error": "Erro interno do servidor."}
-                }
-            },
-        },
+        }
     },
+    status_code=status.HTTP_200_OK,
 )
 async def predict(data: FlightData):
     """
@@ -163,11 +116,11 @@ async def predict(data: FlightData):
     Returns
     -------
     dict
-        Predição do atraso em minutos.
+        Predição do atraso em minutos ou mensagem de erro.
     """
     global model, history
     if model is None:
-        raise HTTPException(status_code=400, detail="Modelo não carregado")
+        return {"status": "Modelo não carregado"}
 
     try:
         # prepara os dados de entrada
@@ -189,9 +142,7 @@ async def predict(data: FlightData):
 
         return {"prediction": prediction}
     except ValueError as e:
-        raise HTTPException(status_code=422, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Erro interno do servidor: " + str(e))
+        return e
 
 
 # endpoint para visualizar o histórico
@@ -201,37 +152,36 @@ async def predict(data: FlightData):
     description="Retorna o histórico de previsões realizadas pela API.",
     responses={
         200: {
-            "description": "Histórico retornado com sucesso.",
+            "description": "Resposta para todas as situações.",
             "content": {
                 "application/json": {
                     "example": {
                         "history": [
-                            {"input": {
-                                "month": 7,
-                                "day": 23,
-                                "hour": 16,
-                                "sched_dep_time": 1630,
-                                "sched_arr_time": 1930,
-                                "origin": "JFK",
-                                "dest": "LAX",
-                                "carrier": "DL",
-                                "distance": 3983.0,
-                                "dep_delay": 15.0
-                            }, "prediction": -29.344152735629503}
+                            {
+                                "input": {
+                                    "month": 7,
+                                    "day": 23,
+                                    "hour": 16,
+                                    "sched_dep_time": 1630,
+                                    "sched_arr_time": 1930,
+                                    "origin": "JFK",
+                                    "dest": "LAX",
+                                    "carrier": "DL",
+                                    "distance": 3983.0,
+                                    "dep_delay": 15.0
+                                }, 
+                                "prediction": -29.344152735629503
+                            }
                         ]
+                    },
+                    "example_no_history": {
+                        "status": "Histórico não encontrado"
                     }
                 }
             },
-        },
-        404: {
-            "description": "Histórico não encontrado.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Histórico não encontrado"}
-                }
-            },
-        },
+        }
     },
+    status_code=status.HTTP_200_OK,
 )
 async def get_history():
     """
@@ -240,10 +190,10 @@ async def get_history():
     Returns
     -------
     dict
-        Histórico de previsões.
+        Histórico de previsões ou mensagem de erro.
     """
     if not history:
-        raise HTTPException(status_code=404, detail="Histórico não encontrado")
+        return {"status": "Histórico não encontrado"}
     return {"history": history}
 
 
