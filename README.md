@@ -41,6 +41,12 @@ A solução consiste em uma API para previsão de atraso em voos baseado em um m
     └── test_main.py
 ```
 
+## Sugestões de arquitetura na AWS para a solução
+
+O desenho de arquitetura da parte superior do desenho utiliza um cluster EKS separado para servir a API de inferência, oferecendo maior flexibilidade e controle, mas com maior complexidade operacional e custos. Já a segunda arquitetura emprega um SageMaker Endpoint para inferência, simplificando o processo com escalabilidade automática e menor custo operacional, embora com menos flexibilidade na customização da infraestrutura. A escolha entre elas depende das demandas de controle da infraestrutura, custos, e o volume de requisições esperado.
+
+![](docs/diagram.png)
+
 ## Execução da aplicação
 
 Clonar o repo localmente:
@@ -67,7 +73,13 @@ Instalar as libs necessárias:
 pip install -r requirements.txt  
 ```
 
-Para executar os testes unitários, executar:
+### Notebooks
+
+Os notebooks `01-etl.ipynb`, `02-eda.ipynb` e `03-ml.ipynb` são repectivos ao ETL para obtenção de dados das APIs da AirportDB e Waeatherbit (configura o arquivo `.env` na ráiz do repo), EDA respondendo as perguntas do desafio, e por fim um notebbok para treino de um modelo de ML para previsão de atraso em voos.
+
+### Testes unitários
+
+Para executar os testes unitários da API:
 
 ```bash
 pytest src/test_main.py
